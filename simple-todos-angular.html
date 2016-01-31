@@ -1,0 +1,54 @@
+<head>
+  <title>Todo List</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body ng-controller="TodosListCtrl" layout="column">
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h3>
+      <span>Todo List ({{incompleteCount()}})</span>
+    </h3>
+    <span flex></span>
+    <md-checkbox ng-model="hideCompleted" aria-label="Checkbox 1">
+      Hide Completed Tasks
+    </md-checkbox>
+    <login-buttons></login-buttons>
+  </div>
+</md-toolbar>
+<md-content>
+  <form class="new-task"
+        ng-submit="addTask(newTask); newTask='';"
+        ng-show="$root.currentUser">
+    <md-input-container class="md-block">
+      <label>Task</label>
+      <input ng-model="newTask" placeholder="Type to add new tasks" >
+    </md-input-container>
+  </form>
+
+  <md-list>
+    <md-list-item ng-repeat="task in tasks">
+      <md-checkbox ng-checked="task.checked" ng-click="setChecked(task)"></md-checkbox>
+      <p>{{task.text}}</p>
+      <md-switch
+              ng-if="task.owner === $root.currentUser._id"
+              ng-model="task.private"
+              ng-click="setPrivate(task)"></md-switch>
+    </md-list-item>
+  </md-list>
+    <!--<button class="delete" ng-click="deleteTask(task)">&times;</button>-->
+  <form class="new-task"
+        ng-submit="addMessage(newMessage); newMessage='';"
+        ng-show="$root.currentUser">
+    <input ng-model="newMessage" type="text"
+           name="text" placeholder="Message ..." />
+  </form>
+  <table>
+    <tr ng-repeat="msg in messages">
+      <td>{{msg.username}}</td>
+      <td>{{msg.body}}</td>
+    </tr>
+  </table>
+
+</md-content>
+</body>
